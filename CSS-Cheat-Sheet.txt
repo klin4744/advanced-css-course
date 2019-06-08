@@ -168,3 +168,131 @@ Now to animate this after property, we can either slap on a keyframe or use anot
 }
 
 Since we turned on the transition property, this will make the pseudo after element expand from our btn element then dissapear gradually as it's opacity is set to zero. Off hover the pseudoelement goes back behind the button.
+
+/////////////////////////////
+// PILLARS OF HTML AND CSS //
+/////////////////////////////
+
+1. Responsive web design - Making a website that looks beautiful on screens of all sizes
+
+- Fluid layouts
+- Media Quqeries
+- Responsive images
+- Correct Units 
+- Desktop first or mobile first 
+
+2. Maintainable and scalable code - Writing code that is clean, easy to understand, and re-useable
+
+- Clean 
+- Easy to understand 
+- Reusable 
+- How to optimize files 
+- How to structure HTML 
+
+3. Web performance - Making the website faster and take less space 
+
+- Less HTTP requests 
+- Less code 
+- Compress code 
+- Use a CSS preprocessor like Sass 
+- Less images (makes up most of the size of the website)
+- Compress images
+
+// How CSS works behind the scenes //
+
+What happens to CSS when we load up a webpage?
+Load HTML -> Parse HTML (decodes it line by line) -> Document Object Model (DOM) is built from decoded html 
+When HTML is parsed, CSS is loaded and parsed 
+
+CSS parsing -> Resolve conflicting CSS declarations (cascade) -> Process final CSS values (Percentages for example will be parsed into normalized units on devices) 
+After parsing, the CSS Object Model (CSSOM)
+is developed, it is a tree-like model like the DOM. These two form the render tree which then leads to Website rendering (The visual formmating model). The final website is then rendered. 
+
+Parsing Phase
+Cascade and specificity 
+
+Breaking down a css statement
+Selector  Declaration block
+.my-class{
+    property: declared value -> Declaration
+}
+In the parsing phase, the first step is the cascade.
+
+The cascade is the process of combining different stylesheets and resolving conflicts between different CSS rules and declarations when more than one rule applies to a certain element. 
+
+There are three sources of CSS:
+Author declarations are CSS declared by the author, User declaration is when the user changes the CSS in the browser, and Browser declarations (user agent) are CSS declarations made by the browser. 
+
+These three sources are combined to make the final CSS, but what happens when there are multiple declarations for the same property on the same element? CSS cascades these to determine which to use in the following order:
+Importance (weight) > specificity > source order 
+The cascade starts by giving each css property an importance status based on where it's declared. Here is the hierachy:
+
+1. User !important declarations 
+2. Author !important declarations 
+3. Author declarations 
+4. User declarations
+5. Default browser declarations 
+
+This means default browser declarations will always be overwritten. Example:
+
+.button{
+    background-color: blue !important;
+}
+#now .pull-right .button{
+    background-color: green;
+}
+
+The button here will be blue because both of these are author declarations but the first, less specific declaration has the !important keyword, so it takes precedence over all other author declarations! If we did not put !important here, since the second button declaration is more specific, it would be applied over the blue background. 
+
+If importance is the same, for example: both elements are author selectors, the cascade moves down and calculates the specificity of each selector. This is done in this hiearchy:
+
+1. Inline styles 
+2. IDs
+3. Classes, pseudo-classes, attribute
+4. Elements, pseudo-elements 
+
+Inline, IDs, Classes/pseudo-classes/attributes, Elements/pseudo Elements
+(0,0,0,0)
+Biggest number takes precedence. Lets look at the following example: 
+.button{
+    code 
+}
+nav#nav div.pull-right .button{
+    code 
+}
+a{
+    code 
+}
+#nav a.button:hover{
+    code 
+}
+Lets calculate the specificity of each:
+1. The first one has 1 class so it's specificty is 
+(0,0,1,0) or 10.
+2. The second one has 1 id, 2 elements (div and nav), and two classes (pull-right and .button) so:
+(0,1,2,2) or 122.
+3. The third one has one element tag, so it's:
+(0,0,0,1) or 1.
+4. The forth has 1 id, 1 element, and 1 class + 1 pseudo class or:
+(0,1,1,2) or 121.
+
+The class with the highest specificity is 2, so it takes precendence over the others!
+
+The winning value is called the cascaded value
+
+What if all of these also had the same specificty, we now move down to source order. The last CSS declaration will overwrite all the declarations before it.
+
+What you should know:
+!important has the highest keyword, it should ONLY be used as a last resource. Spamming !important makes code less maintainable!
+
+Inline styles will always have priority over styles in external stylesheets, but we generally never use these 
+
+A selector that contains 1 ID is more specfic than one with 1000 classes 
+
+A selector that contains 1 class is more specific than one with 1000 elements 
+
+The universal selector * has no specificty value, everything you write will overwrite it!
+
+Rely more on specificty than on the order of selector so that if you ever need to re-arrange your code nothing will mess up. 
+
+When you rely on 3rd-party style sheet, always put your author stylesheet last so they can overwrite the third party style sheet if necessary!
