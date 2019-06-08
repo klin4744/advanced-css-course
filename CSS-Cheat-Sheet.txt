@@ -100,7 +100,7 @@ Keyframes are interesting, they allow us to create an animation variable which w
   }
 }
 
-With keyframes, we can either use the opcaity or transform properties. The percentages define which stage of the animation we're in. We can define every portion of the animation in this way. 0% is our start and 100% is our end. By changing opacity from 0 to 1 from 0% to 100%, we create a fadein effect.
+With keyframes, we can either use the opacity or transform properties. The percentages define which stage of the animation we're in. We can define every portion of the animation in this way. 0% is our start and 100% is our end. By changing opacity from 0 to 1 from 0% to 100%, we create a fadein effect.
 
 To use a keyframe we include it into our element like this:
 .heading-primary-sub {
@@ -113,3 +113,58 @@ To use a keyframe we include it into our element like this:
 The animation property is a shorthand of a plethora of animation properties. Here we just pass in arguments we care about. moveInLeft is our keyframe, 1s is the duration of the animation, and ease-out is a special animation timing function that makes our animation start off slow then ramp up towards the end.
 
 2. Using Pseudoselectors 
+To use a pseduo selector, we must "turn on" the animation property on the parent of the pseudo selector; this then makes all changes to other states of that element animated. For example:
+
+.btn:link,
+.btn:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 40px;
+  display: inline-block;
+  border-radius: 100px;
+  /* Using the transition property on the initial state allows for animations due to tranformation on other states */
+  transition: all 0.2s;
+  position: relative;
+}
+
+Note that link and visited are default states of links, notice that we are turning on animations by defining the transition property. The two things we pass in here are: which animations we want to use (specify all if you aren't sure), and how long it takes to animate. Setting position to relative here again allows us to move around child elements relative to our btn class with absolute positioning. 
+
+Now lets look at other states of our button
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+Since we defined the transition property, when we hover over the button class, we will now see a 0.2s animation where the syling of the button adds a box shadow and a translation. The properties we add here make the button look like it has been lifted while clicking the button makes it seem to drop.
+
+The after pseudoselector 
+The after psuedoselector creates a special element that lies as a child in the parent element or the pseduo element we select it with, we must, like it's parent element, define all it's styling. This after element is commonly used for animations. 
+
+.btn:after {
+  /* Have to specify these for this to show */
+  content: '';
+  display: inline-block;
+  /* This is treated like a copy of the button */
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+}
+
+Here we basically copy the styling of the parent element but give it a negative z index to hide it behind the parent element. We also turn on transition so we can animate this. NOTE, the after pseudoselector needs the content property to be defined, even if you leave an empty string, it must be declared for this to work!
+
+Now to animate this after property, we can either slap on a keyframe or use another pseduoselector. We can chain pseudoselectors by adding colons like so:
+
+.btn:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}
+
+Since we turned on the transition property, this will make the pseudo after element expand from our btn element then dissapear gradually as it's opacity is set to zero. Off hover the pseudoelement goes back behind the button.
