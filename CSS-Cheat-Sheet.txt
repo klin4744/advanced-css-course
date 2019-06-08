@@ -1,0 +1,115 @@
+1. Resetting all browser values to empty. 
+All browsers come with pre-defined styling such as margins and paddings. To account for this we can reset all these values to zero using the global selector. The following css code here sets everything to zero:
+
+* {
+  margin: 0;
+  padding: 0;
+  /* Changes the box model so that the paddings and borders 
+  aren't added to the height or width of the box */
+  box-sizing: border-box;
+}
+
+* is the global selector and here we set all the margins and paddings on the page to default to 0. We also change the box-sizing to be border-box, this means that the padding and border will not be added to the size of a container
+
+2. Creating custom gradients and understanding the background-image property better
+We can use the background-image property to stack images and gradients to create a really unique setup. For example:
+
+background-image: linear-gradient(
+      to right bottom,
+      rgba(126, 213, 111, 0.8),
+      rgba(40, 180, 133, 0.8)
+    ),
+    url('../img/hero.jpg');
+
+The following code creates a gradient that travels from our light green color to the dark green color, it starts with light freen from the top left and travels to the bottom right as specified by to right bottom. We can also see that using rgba, we can set an opacity which lets us make this gradient not block background images that follows. We can also see that we also include a background image. The background-image property will show background-images from left (highest priority) to right (lowest priority). The image all the way to the left will be on top of all the images on its right, this is why we set an opacity for our gradient.
+
+Additionally, we can make sure our image doesn't shift/move around via resizing by forcing it to hold a specific position. We can do this with the following property:
+
+background-position: top;
+
+This ensures that our background stays on the top of its container 
+
+We can also use the background-size: cover property to set the background to always be the width of the viewport. This gives the background dynamic re-sizing properties:
+
+background-size: cover;
+
+3. Creating a custom cut-out shape
+CSS has a special property called clip-path that allows us to create special shapes. Here is an example:
+clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+The polygon clip path takes four parameters: coordinates of top left edge, coordinates of top right edge, coordinates of bottom right edge, and coordinates of bottom left edge as x y values. This allows us to create a polygon and reshape containers. We can additionally use clippy to create custom shapes for us. You can find clippy here:
+
+https://bennettfeely.com/clippy/
+
+4. Positioning
+Absolute
+Absolute positioning will reposition an item based on the first parent container with a position property of relative. For example:
+<div class="parent-container" style="position:relative">
+    <div class="child" style="position:absolute; top:10px"> 
+    </div>
+<div>
+The child div will be top pixels from the top of the first relatively positioned parent div aka the parent-container in this case.
+
+IF YOU WANT TO USE ABSOLUTE POSITIONING, SET A PARENT CONTAINER WITH RELATIVE POSITIONING!
+
+.main-container{
+  position: relative;
+}
+.logo-box {
+  position: absolute;
+  /* top and bottom position are relative to a relatively positoned parent, must set the parent element to have pos relative */
+  top: 40px;
+  left: 40px;
+}
+
+Tricks to center-align elements:
+
+1. With absolute positioning
+.text-box {
+  /* absolute positioning is relative to its parent */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Transform is relative to the OWN element, it shifts itself 50% of its own height and width */
+  transform: translate(-50%, -50%);
+}
+Using absolute postioning, as long as the parent div of our container is set to position: relative we can use percentages to move our div to the center of that container. The property top: 50% and left: 50% sets the top left corner of our element to be 50% away from the width and height of the parent div. To account for the size of our own element that we're moving. We use the transform: translate(-50%,-50%) property to shift the element back left and up 50% of it's own length and height. This puts our element directly in the center of the parent div.
+
+2. Centering inline elements 
+We can additionally just use text-align: center, to center both inline elements and inline-block elements (inline-elements take take up a block). If we want to center a container for example and don't want to change positioning, we can change that container to be inline-block then use text-align center on the parent of that container.
+
+5. Animations
+We can create animations using two different methods: keyframes, and pseudoselectors.
+
+1. keyframes
+Keyframes are interesting, they allow us to create an animation variable which we can then use in our elements. Keyframe animations are activated generally as the page loads, here is an example:
+
+@keyframes moveInLeft {
+  /* Before animation starts */
+  /* For browser speed, only use opacity and transform */
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  80% {
+    transform: translateX(10px);
+  }
+  /* When animation ends */
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+With keyframes, we can either use the opcaity or transform properties. The percentages define which stage of the animation we're in. We can define every portion of the animation in this way. 0% is our start and 100% is our end. By changing opacity from 0 to 1 from 0% to 100%, we create a fadein effect.
+
+To use a keyframe we include it into our element like this:
+.heading-primary-sub {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 17.4px;
+  animation: moveInLeft 1s ease-out;
+}
+The animation property is a shorthand of a plethora of animation properties. Here we just pass in arguments we care about. moveInLeft is our keyframe, 1s is the duration of the animation, and ease-out is a special animation timing function that makes our animation start off slow then ramp up towards the end.
+
+2. Using Pseudoselectors 
