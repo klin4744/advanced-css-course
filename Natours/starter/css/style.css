@@ -6,3 +6,183 @@ Medium green: #55c57a
 Dark green: #28b485
 
 */
+/* 
+basic reset */
+/* Universal selector selects everything on page */
+* {
+  margin: 0;
+  padding: 0;
+  /* Changes the box model so that the paddings and borders 
+  aren't added to the height or width of the box */
+  box-sizing: border-box;
+}
+body {
+  /* put things you want all the child elements of the body to inherit */
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #777;
+  padding: 30px;
+}
+
+.header {
+  height: 95vh;
+  /* To specify a gradient, use the background-image property, since we already have one, use a comma, the first image sits on top */
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(126, 213, 111, 0.8),
+      rgba(40, 180, 133, 0.8)
+    ),
+    url('../img/hero.jpg');
+  /* Cover fits the element to the viewport width */
+  background-size: cover;
+  /* Ensures that the background always stays to the top of the container */
+  background-position: top;
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  position: relative;
+}
+.logo-box {
+  position: absolute;
+  /* top and bottom position are relative to a relatively positoned parent, must set the parent element to have pos relative */
+  top: 40px;
+  left: 40px;
+}
+.logo {
+  height: 35px;
+}
+.text-box {
+  /* absolute positioning is relative to its parent */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Transform is relative to the OWN element, it shifts itself 50% of its own height and width */
+  transform: translate(-40%, -50%);
+  /* Aligns all inline elements to center including inline-block */
+  text-align: center;
+}
+.heading-primary {
+  color: #fff;
+  text-transform: uppercase;
+  /* Stops the shaking on an element, the backpart of the element wont show  */
+  backface-visibility: hidden;
+  margin-bottom: 16px;
+}
+.heading-primary-main {
+  display: block;
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: 35px;
+
+  /* Adding animations we created */
+  animation-name: moveInLeft;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  /*
+  animation-delay - a delay before an animation begins
+  animation-iteration-count - how many times you wnat the animation to occur
+  animation-timing-function - animation timing function. Ease-in: animation starts slow then speeds up
+  */
+}
+.heading-primary-sub {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 17.4px;
+  animation: moveInRight 1s ease-out;
+}
+@keyframes moveInLeft {
+  /* Before animation starts */
+  /* For browser speed, only use opacity and transform */
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  80% {
+    transform: translateX(10px);
+  }
+  /* When animation ends */
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes moveInRight {
+  /* Before animation starts */
+  /* For browser speed, only use opacity and transform */
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  80% {
+    transform: translateX(-10px);
+  }
+  /* When animation ends */
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes moveInBottom {
+  /* Before animation starts */
+  /* For browser speed, only use opacity and transform */
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  /* When animation ends */
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.btn:link,
+.btn:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 40px;
+  display: inline-block;
+  border-radius: 100px;
+  /* Using the transition property on the initial state allows for animations due to tranformation on other states */
+  transition: all 0.2s;
+  position: relative;
+}
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.btn-white {
+  background-color: #fff;
+  color: #777;
+}
+.btn:after {
+  /* Have to specify these for this to show */
+  content: '';
+  display: inline-block;
+  /* This is treated like a copy of the button */
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+}
+.btn-white:after {
+  background-color: white;
+}
+/* When we hover the button we want to apply the after element */
+.btn:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}
+.btn-animated {
+  animation-delay: 0.75s;
+  animation-fill-mode: backwards;
+  animation: moveInBottom 0.5s ease-out;
+}
