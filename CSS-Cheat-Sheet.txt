@@ -296,3 +296,91 @@ The universal selector * has no specificty value, everything you write will over
 Rely more on specificty than on the order of selector so that if you ever need to re-arrange your code nothing will mess up. 
 
 When you rely on 3rd-party style sheet, always put your author stylesheet last so they can overwrite the third party style sheet if necessary!
+
+More practice:
+Assume the html element has all the associated tags
+
+CSS
+.button{
+    font-size: 20px;
+    color:white;
+    background-color: blue;
+}
+a{
+    background-color: purple;
+}
+#nav div.pull-right a.button{
+    background-color: orangered;
+}
+#nav a.button:hover{
+    background-color: yellow;
+}
+
+We see no importance tags, so we skip to specificity here.
+
+1. 1 class tag => (0,0,1,0);
+2. 1 element tag => (0,0,0,1);
+3. 1 id, 2 class, 2 element => (0,1,2,2);
+4. 1 id, 2 classes/psuedoclasses, 1 element => (0,1,2,1);
+
+3 takes precendence, the background-color of the button will be orangered.
+
+Element tags will always almost do nothing because they have the lowest specificity, we must add the !important keyword to have it take precedence. If you NEED to use !important, you probably have to refactor your code.
+
+Notice how 4 has less specificity than 3, this means that 3 takes precedence over 4. This means if we hover the button, it will NOT change color on hover. We must increase the specificity of the selector by adding classes!
+
+Part 2 - Value parsing 
+If you use a unit other than pixels, it will always eventually be parsed to pixels 
+
+1. Declared value - author declarations 
+2. Cascaded value - the value with the highest priority is chosed 
+3. Specified value - Defaults to a value if there is no cascaded value 
+4. Computed value - converting relative values to absolute values, things like orangered are converted to their hex values 
+5. Used value - Final calculations based on layout. If you use a percentage, it will be calculated here. If you do width: 60%, the width of the parent element * .6 will be calculated. 
+6. The actual value is given after considering browser restrictions. It will be in pixels. 
+
+Each value of a page NEEDS to have a value. This means that if we do not set a value, our CSS will have a default value. If we did not define a value, the parsing skips the declared and cascading step. The specified value is given as 0px. Since we return a pixel value, the specified value is equal to the actual value.
+
+Font-sizes 
+Browsers usually have a declared font-size, remember that browser have their own css declarations. This means that when parsing occurs, 16px is the cascaded value if nothing else is declared. Nothing else has to be calculated if no other declarations are made, and since we have a pixel value, other steps can be skipped.
+
+REMS
+Rems are based on the default values. 1.5rem of font size for example is 16px * 1.5 or 24px. 
+
+Inheritance can also occur, If we set a property on a parent element, its child will inherit that value and pass it into the specified value for parsing. 
+
+Unit conversions
+Percentages (fonts) - This means that the element will have a font size that is x% the size of its parent's font size 
+x% * parent's computed size
+Percentages (lengths) - This is the parent element's width * the percentage given. 
+x% * parent's computed width 
+
+NOTE PERCENTAGES FOR LENGTHS ARE ALWAYS BASED ON THE ELEMENT'S WIDTH!
+
+EM and REM 
+em(font) - ems for font-size is the parent's font size *value of em.
+x * parent computed font-size  
+em(length) - finds a length by multiplying x by the current length of the element 
+x * current element's font-size 
+
+rem - always uses the root font size 
+x * computed root font-size 
+
+REM and EM are always based on font-sizes. By changing font-sizes we can also change lengths, gives us good flexibility. 
+
+VH and VW 
+1vh is 1% of the viewport height 
+xvh = x% of the viewport height 
+1vw is 1% of the viewport width
+xvw = x% of the viewport width 
+
+What you need to know from this section
+-Each css property has an initial value that is used if nothing is declared (if there is no inheritance)
+-Browsers specify a root font-size for each page (usually 16px)
+-Percentages and relative values are always converted to pixels 
+-Percentages are measured relative to their parent's font-size, if used to specify font-size 
+-Percentages are measured relative to their parent's width if used to specify length 
+-em is measured relative to their parent font-size if used to specify font-sizes 
+- em are measured relative to the current font-size, if used to specify lengths 
+- rem are always measured relative to the document's root font-size.
+- vh and vw are simply percentage measurements of the viewport's height and width.
