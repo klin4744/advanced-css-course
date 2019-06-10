@@ -8,22 +8,28 @@ Dark green: #28b485
 */
 /* 
 basic reset */
-/* Universal selector selects everything on page */
-* {
+/* Universal selector selects everything on page also select after and before to make sure we reset them as well */
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   /* Changes the box model so that the paddings and borders 
   aren't added to the height or width of the box */
-  box-sizing: border-box;
+  /* By setting inherit here, all children of body now will inherit border-box, this allows plugins and such to overwrite the border-box property if necessary since it isnt an author declaration anymore */
+  box-sizing: inherit;
+}
+html {
+  font-size: 62.5%;
 }
 body {
   /* put things you want all the child elements of the body to inherit */
   font-family: 'Lato', sans-serif;
   font-weight: 400;
-  font-size: 16px;
   line-height: 1.7;
   color: #777;
-  padding: 30px;
+  padding: 3rem;
+  box-sizing: border-box;
 }
 
 .header {
@@ -45,11 +51,11 @@ body {
 .logo-box {
   position: absolute;
   /* top and bottom position are relative to a relatively positoned parent, must set the parent element to have pos relative */
-  top: 40px;
-  left: 40px;
+  top: 4rem;
+  left: 4rem;
 }
 .logo {
-  height: 35px;
+  height: 3.5rem;
 }
 .text-box {
   /* absolute positioning is relative to its parent */
@@ -66,13 +72,13 @@ body {
   text-transform: uppercase;
   /* Stops the shaking on an element, the backpart of the element wont show  */
   backface-visibility: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 6rem;
 }
 .heading-primary-main {
   display: block;
-  font-size: 60px;
+  font-size: 6rem;
   font-weight: 400;
-  letter-spacing: 35px;
+  letter-spacing: 3.5rem;
 
   /* Adding animations we created */
   animation-name: moveInLeft;
@@ -86,9 +92,9 @@ body {
 }
 .heading-primary-sub {
   display: block;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 17.4px;
+  letter-spacing: 1.74rem;
   animation: moveInRight 1s ease-out;
 }
 @keyframes moveInLeft {
@@ -96,10 +102,10 @@ body {
   /* For browser speed, only use opacity and transform */
   0% {
     opacity: 0;
-    transform: translateX(-100px);
+    transform: translateX(-10rem);
   }
   80% {
-    transform: translateX(10px);
+    transform: translateX(1rem);
   }
   /* When animation ends */
   100% {
@@ -112,10 +118,10 @@ body {
   /* For browser speed, only use opacity and transform */
   0% {
     opacity: 0;
-    transform: translateX(100px);
+    transform: translateX(10rem);
   }
   80% {
-    transform: translateX(-10px);
+    transform: translateX(-1rem);
   }
   /* When animation ends */
   100% {
@@ -128,7 +134,7 @@ body {
   /* For browser speed, only use opacity and transform */
   0% {
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(10rem);
   }
   /* When animation ends */
   100% {
@@ -140,20 +146,21 @@ body {
 .btn:visited {
   text-transform: uppercase;
   text-decoration: none;
-  padding: 15px 40px;
+  padding: 1.5rem 4rem;
   display: inline-block;
-  border-radius: 100px;
+  border-radius: 10rem;
   /* Using the transition property on the initial state allows for animations due to tranformation on other states */
   transition: all 0.2s;
   position: relative;
+  font-size: 1.6rem;
 }
 .btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-0.3rem);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
 }
 .btn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
 .btn-white {
   background-color: #fff;
@@ -166,7 +173,7 @@ body {
   /* This is treated like a copy of the button */
   height: 100%;
   width: 100%;
-  border-radius: 100px;
+  border-radius: 10rem;
   position: absolute;
   top: 0;
   left: 0;
